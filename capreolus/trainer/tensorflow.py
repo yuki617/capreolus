@@ -15,7 +15,7 @@ from capreolus.searcher import Searcher
 from capreolus import ConfigOption, evaluator
 from capreolus.trainer import Trainer
 from capreolus.utils.loginit import get_logger
-from capreolus.reranker.common import TFPairwiseHingeLoss, TFCategoricalCrossEntropyLoss, KerasPairModel, KerasTripletModel
+from capreolus.reranker.common import TFPairwiseHingeLoss, TFCategoricalCrossEntropyLoss, TFLCELoss, KerasPairModel, KerasTripletModel, KerasLCEModel
 from tensorflow.keras.mixed_precision import experimental as mixed_precision
 
 
@@ -524,6 +524,8 @@ class TensorflowTrainer(Trainer):
                 loss = TFPairwiseHingeLoss(reduction=tf.keras.losses.Reduction.NONE)
             elif loss_name == "crossentropy":
                 loss = TFCategoricalCrossEntropyLoss(from_logits=True, reduction=tf.keras.losses.Reduction.NONE)
+            elif loss_name == "lce_loss":
+                loss = TFLCELoss(from_logits=True, reduction=tf.keras.losses.Reduction.NONE)
             else:
                 loss = tfr.keras.losses.get(loss_name)
         except ValueError:
@@ -543,6 +545,8 @@ class TensorflowTrainer(Trainer):
         """
         if self.config["loss"] == "crossentropy":
             return KerasPairModel(model)
+        elif self.config["loss"] == "lce_loss":
+            return KerasLCEModel(model)
 
         return KerasTripletModel(model)
 
