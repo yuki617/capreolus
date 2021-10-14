@@ -6,7 +6,7 @@ from collections import defaultdict
 from tqdm import tqdm
 
 from . import Extractor
-from bertpassage import BertPassage
+from .bertpassage import BertPassage
 from capreolus import ConfigOption, get_logger
 from capreolus.utils.exceptions import MissingDocError
 
