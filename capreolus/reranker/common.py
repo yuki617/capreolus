@@ -85,7 +85,7 @@ class TFCategoricalCrossEntropyLoss(CategoricalCrossentropy):
 class TFLCELoss(CategoricalCrossentropy):
     def call(self, ytrue, ypred):
         tf.debugging.assert_equal(tf.shape(ytrue), tf.shape(ypred))
-
+        return super(TFLCELoss, self).call(ytrue, ypred)
 
 def pair_softmax_loss(pos_neg_scores, *args, **kwargs):
     scores = torch.stack(pos_neg_scores, dim=1)

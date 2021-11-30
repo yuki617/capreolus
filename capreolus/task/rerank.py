@@ -84,6 +84,12 @@ class RerankTask(Task):
         )
 
         dev_qrels = {qid: self.benchmark.qrels[qid] for qid in self.benchmark.non_nn_dev[fold] if qid in self.benchmark.qrels}
+        print(train_output_path)
+        print(dev_output_path)
+        print(self.config["optimize"])
+        print(self.benchmark.relevance_level)
+        print(len(dev_qrels))
+        print('done')
         dev_preds = self.reranker.trainer.train(
             self.reranker,
             train_dataset,
@@ -92,7 +98,6 @@ class RerankTask(Task):
             dev_output_path,
             dev_qrels,
             self.config["optimize"],
-            self.benchmark.relevance_level,
         )
 
         self.reranker.trainer.load_best_model(self.reranker, train_output_path)
